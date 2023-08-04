@@ -46,7 +46,8 @@ The objective of this guide is to deploy an application to a cloud provider (AWS
 
 - Copy the 'ansible' folder from the cloned repository to the Ubuntu subsystem and navigate to the 'ansible' folder.
 - Copy the 'keypair.pem' file from the 'public_key' folder in the repository to the 'ansible' folder in Ubuntu and set appropriate permissions using `chmod 400 keypair.pem`.
-- Obtain the Public IPv4 DNS of the EC2 instances from the AWS Management Console and update the 'hosts.ini' file in the 'ansible' folder with the DNS and private key file path for each instance.
+- Obtain the Public IPv4 DNS of the EC2 instances from 'EC2' service in the AWS Management Console and update the 'hosts.ini' file in the 'ansible' folder with the DNS.
+  - Example: `ec2-3-81-231-87.compute-1.amazonaws.com ansible_user=ec2-user ansible_ssh_private_key_file=keypair.pem`
 
 ### 9. Run Ansible Playbook
 
