@@ -1,13 +1,16 @@
-resource "aws_launch_configuration" "ASGConfiguration" {
+resource "aws_launch_template" "ASGTemplate" {
   image_id        = "ami-0f34c5ae932e6f0e4"
   instance_type   = "t2.micro"
   key_name = aws_key_pair.Keypair.key_name
-  security_groups     = [aws_security_group.SecurityGroup.id]
+  vpc_security_group_ids = [ aws_security_group.SecurityGroup.id ]
 }
 
 resource "aws_autoscaling_group" "ASG" {
   name                 = "ASG"
-  launch_configuration = aws_launch_configuration.ASGConfiguration.name
+  launch_template {
+    id      = aws_launch_template.ASGTemplate.id
+    version = aws_launch_template.ASGTemplate.latest_version
+  }
   min_size             = 2
   max_size             = 4
   desired_capacity     = 2
