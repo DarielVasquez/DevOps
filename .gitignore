@@ -36,3 +36,4 @@ terraform.rc
 
 keypair.pem
 keypair.pub
+public_key
