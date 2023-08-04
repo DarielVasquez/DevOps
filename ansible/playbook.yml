@@ -1,0 +1,55 @@
+# playbook.yml
+
+- name: Install Node.js and Configure Application
+  hosts: instances
+  become: yes
+
+  tasks:
+    - name: Install prerequisites
+      dnf:
+        name:
+          - gcc-c++
+          - make
+        state: present
+
+    - name: Install Node.js
+      dnf:
+        name: "nodejs"
+        state: present
+
+    - name: Install npm
+      dnf:
+        name: npm
+        state: present
+
+    - name: Install pm2
+      npm:
+        name: pm2
+        global: yes
+
+    - name: Install git
+      dnf:
+        name: git
+        state: present
+
+    - name: Copy application repository from Github
+      git:
+        repo: https://github.com/abkunal/Chat-App-using-Socket.io
+        dest: /var/www/app
+
+    - name: Install application dependencies
+      command: npm install
+      args:
+        chdir: /var/www/app
+
+    - name: Start the Node.js app with pm2
+      command: pm2 start /var/www/app/app.js
+      args:
+        chdir: /var/www/app
+      become: yes
+
+    - name: Generate and save pm2 startup script
+      command: pm2 startup
+      args:
+        chdir: /var/www/app
+      become: yes
